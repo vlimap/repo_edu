@@ -1,0 +1,95 @@
+/* Estilos Gerais */
+body {
+    font-family: 'Arial', sans-serif;
+    background: url('https://example.com/your-background.jpg') no-repeat center center fixed;
+    background-size: cover;
+    margin: 0;
+    padding: 0;
+    height: 100%;
+}
+
+/* Cabeçalho e Navegação */
+.navbar {
+    background-color: #f8f9fa!important; /* Cor de fundo clara */
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* Sombra leve para destaque */
+}
+
+.navbar-brand {
+    font-weight: bold; /* Negrito para o título/nome do site */
+}
+
+.navbar-toggler {
+    border-color: rgba(0,0,0,.1); /* Bordas menos destacadas para o botão de menu mobile */
+}
+
+/* Estilo para os ícones das opções do menu */
+.nav-link:before {
+    font-family: "Font Awesome 5 Free"; /* Usando Font Awesome para ícones */
+    padding-right: 5px; /* Espaço entre ícone e texto */
+    color: #007bff; /* Cor dos ícones */
+}
+
+
+/* Estilos do Formulário de Busca */
+.form-control {
+    border-radius: 20px; /* Borda arredondada para a caixa de busca */
+}
+
+.btn-outline-success {
+    border-radius: 20px; /* Borda arredondada para o botão de busca */
+}
+
+/* Rodapé */
+footer {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    color: #000000; /* Cor do texto */
+    background-color: rgba(248, 249, 250, 0.8); /* Fundo semi-transparente */
+    border-top: 1px solid #dee2e6; /* Linha de separação */
+}
+
+/* Ajuste para garantir que o conteúdo não fique escondido atrás do rodapé */
+body > main {
+    padding-bottom: 50px; /* Espaço extra no fundo igual à altura do rodapé */
+}
+
+.nav-item {
+    /* white-space: nowrap; Removido para evitar que o conteúdo do dropdown seja cortado */
+    /* overflow: hidden; Removido para assegurar que o dropdown possa desdobrar-se completamente */
+    text-overflow: ellipsis; /* Mantém os "..." para texto muito longo */
+}
+  .nav-link {
+    min-width: 0; /* Remove a largura mínima, se houver */
+  }
+
+  @media (max-width: 768px) {
+    .navbar-nav {
+      flex-direction: column; /* Empilha os itens do menu verticalmente em dispositivos móveis */
+    }
+  }
+  .container-fluid {
+    width: 100%; /* Deve ser sempre 100% */
+    max-width: 100%; /* Certifica-se de que não exceda a largura da tela */
+    padding-right: var(--bs-gutter-x, .75rem); /* Espaçamento à direita */
+    padding-left: var(--bs-gutter-x, .75rem); /* Espaçamento à esquerda */
+    margin-right: auto;
+    margin-left: auto;
+  }
+.dropdown-menu {
+    max-width: 100%; /* Limita a largura máxima do dropdown */
+    overflow: hidden; /* Evita que o conteúdo exceda a largura do menu */
+}
+.user-photo {
+    width: 30px; 
+    height: 30px; 
+    border-radius: 50%;
+    object-fit: cover; /* Garante que a imagem mantenha sua proporção */
+}
+
+input[readonly] {
+    background-color: #e9ecef;
+    opacity: 1;
+  }
+
