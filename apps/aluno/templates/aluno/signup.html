@@ -3,13 +3,26 @@
 {% block content %}
 <div class="row justify-content-center">
     <div class="col-md-8">
-        <h2 class="text-center mt-5">Cadastro</h2>
+        <h2 class="text-center mt-5">Cadastro do aluno</h2>
         <form method="post" enctype="multipart/form-data">
             {% csrf_token %}
-            {% for field in form %}
-                <div class="mb-3">
+            <div class="mb-3">
+                <label for="{{ form.user_type.id_for_label }}" class="form-label">{{ form.user_type.label }}</label>
+                {{ form.user_type }}
+                {% if form.user_type.value == 'professor' %}
+                    <div class="alert alert-info mt-2">
+                        Caro professor, entre em contato com a coordenação para receber seu acesso.
+                    </div>
+                {% endif %}
+            </div>
+            {% for field in form.visible_fields %}
+                <div class="mb-3 {% if form.user_type.value == 'professor' %}disabled{% endif %}">
                     <label for="{{ field.id_for_label }}" class="form-label">{{ field.label }}</label>
-                    {{ field }}
+                    {% if form.user_type.value == 'professor' %}
+                        <input type="text" class="form-control" value="" disabled>
+                    {% else %}
+                        {{ field }}
+                    {% endif %}
                     {% if field.help_text %}
                     <small class="form-text text-muted">{{ field.help_text }}</small>
                     {% endif %}

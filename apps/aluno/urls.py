@@ -1,11 +1,11 @@
 from django.urls import path
-from .views import home, login_view, signup_view, logout_view,  edit_profile
+from apps.aluno.views import home, login_view_aluno, edit_profile_aluno,  logout_view_aluno, signup_view_aluno
 from django.contrib.auth import views as auth_views
 
 urlpatterns = [
     path('', home, name='home'),
-    path('login', login_view, name='login'),
-    path('cadastro', signup_view, name='signup'),
-    path('logout', logout_view, name='logout'),
-    path('editar-perfil', edit_profile, name='edit_profile'),
+    path('login-view-aluno', login_view_aluno, name='login-aluno'),
+    path('signup-view-aluno', signup_view_aluno, name='signup-aluno'),
+    path('logout-view-aluno', logout_view_aluno, name='logout-aluno'),
+    path('edit-profile-aluno', edit_profile_aluno, name='edit-profile-aluno'),
 ]

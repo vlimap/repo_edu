@@ -19,41 +19,51 @@
                 <a class="navbar-brand" href="{% url 'home' %}">Repo Edu</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                   <span class="navbar-toggler-icon"></span>
-              </button>
-              <div class="collapse navbar-collapse" id="navbarNav">
-                  <ul class="navbar-nav ms-auto">
-                      <li class="nav-item">
-                          <form class="d-flex">
-                              <input class="form-control me-2" type="search" placeholder="Buscar assunto" aria-label="Search" />
-                              <button class="btn btn-outline-success" type="submit">Buscar</button>
-                          </form>
-                      </li>
-                      <li class="nav-item">
-                          <a class="nav-link" href="#">Sobre</a>
-                      </li>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ms-auto">
+                        <li class="nav-item">
+                            <form class="d-flex">
+                                <input class="form-control me-2" type="search" placeholder="Buscar assunto" aria-label="Search" />
+                                <button class="btn btn-outline-success" type="submit">Buscar</button>
+                            </form>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Sobre</a>
+                        </li>
                         {% if user.is_authenticated %}
                         <li class="nav-item dropdown">
                             <a class="btn btn-secondary dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 {% if user.foto %}
                                     <img src="{{ user.foto.url }}" alt="Foto do usuário" class="rounded-circle" style="width: 30px; height: 30px;">
                                 {% else %}
-                                    <img src="{% static 'assets/img/default-avatar.png' %}" alt="{{ user.name }}" class="rounded-circle" style="width: 30px; height: 30px;">
+                                    <img src="{% static 'assets/img/default-avatar.png' %}" alt="{{ user.nome}}" class="rounded-circle" style="width: 30px; height: 30px;">
                                 {% endif %}
-                                {{ user.name|title }}
+                                {{ user.nome|title }}
                             </a>
                             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownMenuLink">
-                                <li><a class="dropdown-item" href="{% url 'edit_profile' %}">Gerenciar seu perfil</a></li>
-                                <li><hr class="dropdown-divider"></li>
-                                <li><a class="dropdown-item" href="{% url 'logout' %}"><i class="bi bi-box-arrow-right"></i></a></li>
+                                {% if user.is_professor %}
+                                    <li><a class="dropdown-item" href="{% url 'edit-professor' %}">Gerenciar seu perfil</a></li>
+                                    <li><hr class="dropdown-divider"></li>
+                                    <li><a class="dropdown-item" href="{% url 'logout-professor' %}"><i class="bi bi-box-arrow-right"></i>Sair</a></li>
+                                {% else %}
+                                    <li><a class="dropdown-item" href="{% url 'edit-profile-aluno' %}">Gerenciar seu perfil</a></li>
+                                    <li><hr class="dropdown-divider"></li>
+                                    <li><a class="dropdown-item" href="{% url 'logout-aluno' %}"><i class="bi bi-box-arrow-right"></i>Sair</a></li>
+                                {% endif %}
                             </ul>
                         </li>
                         {% else %}
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="loginDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Login</a>
+                            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="loginDropdown">
+                                <li><a class="dropdown-item" href="{% url 'login-professor' %}">Professor</a></li>
+                                <li><a class="dropdown-item" href="{% url 'login-aluno' %}">Aluno</a></li>
+                            </ul>
+                        </li>
                         <li class="nav-item">
-                          <a class="nav-link" href="{% url 'signup' %}">Cadastrar</a>
-                      </li>
-                      <li class="nav-item">
-                          <a class="nav-link" href="{% url 'login' %}">Login</a>
-                      </li>
+                            <a class="nav-link" href="{% url 'signup-aluno' %}">Cadastrar</a>
+                        </li>
                         {% endif %}
                     </ul>
                 </div>
@@ -61,33 +71,33 @@
         </nav>
     </header>
     <main class="container mt-4">
-      {% block messages %}
-        {% if messages %}
-          <div class="container">
-            <div class="row justify-content-center">
-              <div class="col-md-8">
-                {% for message in messages %}
-                  <div class="alert alert-{{ message.tags }} alert-dismissible fade show mt-3" role="alert">
-                    {{ message }}
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                  </div>
-                {% endfor %}
-              </div>
-            </div>
-          </div>
-        {% endif %}
-      {% endblock %}
+        {% block messages %}
+            {% if messages %}
+                <div class="container">
+                    <div class="row justify-content-center">
+                        <div class="col-md-8">
+                            {% for message in messages %}
+                                <div class="alert alert-{{ message.tags }} alert-dismissible fade show mt-3" role="alert">
+                                    {{ message }}
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+        {% endblock %}
         {% block content %}
             <!-- Conteúdo principal será inserido aqui pelas outras páginas -->
         {% endblock %}
     </main>
-    
     <footer class="bg-light text-center text-lg-start">
         <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2)">
             © 2024 Repo Edu: Todos os direitos reservados
         </div>
     </footer>
     
+    <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

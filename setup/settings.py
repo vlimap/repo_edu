@@ -2,9 +2,11 @@ from pathlib import Path
 import os
 from decouple import config
 from django.contrib.messages import constants as messages
+import environ
+
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
@@ -29,7 +31,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'apps.aluno',  
     'apps.professor', 
-    'widget_tweaks'
+    'widget_tweaks',
+    'ckeditor',
 ]
 
 MIDDLEWARE = [
@@ -51,10 +54,12 @@ MESSAGE_TAGS = {
     messages.ERROR: 'danger',
 }
 AUTH_USER_MODEL = 'aluno.Aluno'
+AUTH_USER_MODEL = 'professor.Professor'
 AUTHENTICATION_BACKENDS = [
     'apps.aluno.backends.EmailBackend',
     'django.contrib.auth.backends.ModelBackend',
 ]
+
 
 
 
@@ -82,10 +87,27 @@ WSGI_APPLICATION = 'setup.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
+
+# Initialize environment variables
+env = environ.Env()
+# Reading .env file
+environ.Env.read_env()
+
+# Define o diretório base como sendo o diretório do arquivo settings.py
+
+# Initialize environment variables
+env = environ.Env()
+# Reading .env file
+environ.Env.read_env()
+
+# Define o diretório base como sendo o diretório do arquivo settings.py
+db_path = BASE_DIR / 'db.sqlite3'
+os.makedirs(os.path.dirname(db_path), exist_ok=True)
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'NAME': str(db_path),
     }
 }
 
@@ -141,4 +163,5 @@ MEDIA_URL = "/media/"
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
 

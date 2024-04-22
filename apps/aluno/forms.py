@@ -1,7 +1,7 @@
 from django import forms
 from django.core.exceptions import ValidationError
 from django.contrib.auth.forms import UserChangeForm
-from .models import Aluno
+from apps.aluno.models import Aluno
 
 class FormLogin(forms.Form):
     email = forms.EmailField(
@@ -15,21 +15,27 @@ class FormLogin(forms.Form):
         widget=forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'Digite sua senha'})
     )
 
-class FormCadastro(forms.ModelForm): 
+class FormCadastro(forms.ModelForm):
     confirm_password = forms.CharField(
         label='Confirmar Senha',
-        widget=forms.PasswordInput(attrs={'class': 'form-control', 'id': 'confirm_password', 'placeholder': 'Confirme sua senha'})
+        widget=forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'Confirme sua senha'}),
+        required=True
     )
 
     class Meta:
         model = Aluno
-        fields = ['name', 'cpf', 'email', 'password', 'confirm_password', 'foto']
+        fields = ['nome', 'cpf', 'email', 'password', 'foto']
         widgets = {
-            'name': forms.TextInput(attrs={'class': 'form-control', 'id': 'name', 'placeholder': 'Digite seu nome completo'}),
-            'cpf': forms.TextInput(attrs={'class': 'form-control', 'id': 'cpf', 'placeholder': 'Digite seu CPF'}),
-            'email': forms.EmailInput(attrs={'class': 'form-control', 'id': 'email', 'placeholder': 'Digite seu e-mail'}),
-            'password': forms.PasswordInput(attrs={'class': 'form-control', 'id': 'password', 'placeholder': 'Digite sua senha'}),
+            'nome': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Digite seu nome completo'}),
+            'cpf': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Digite seu CPF'}),
+            'email': forms.EmailInput(attrs={'class': 'form-control', 'placeholder': 'Digite seu e-mail'}),
+            'password': forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'Digite sua senha'}),
+            'foto': forms.FileInput(attrs={'class': 'form-control'}),
         }
+
+    def __init__(self, *args, **kwargs):
+        super(FormCadastro, self).__init__(*args, **kwargs)
+        
 
     def clean_cpf(self):
         cpf = self.cleaned_data.get('cpf')
@@ -46,24 +52,17 @@ class FormCadastro(forms.ModelForm):
     def clean(self):
         cleaned_data = super().clean()
         password = cleaned_data.get('password')
-        confirm_password = self.cleaned_data.get('confirm_password')
-        if password != confirm_password:
-            self.add_error('confirm_password', 'As senhas não são iguais!')
+        confirm_password = cleaned_data.get('confirm_password')
+        if password and confirm_password and password != confirm_password:
+            self.add_error('confirm_password', 'As senhas não são iguais.')
         return cleaned_data
-
-    def save(self, commit=True):
-        user = super().save(commit=False)
-        user.set_password(self.cleaned_data["password"])
-        if commit:
-            user.save()
-        return user
 
 class AtualizarPerfil(UserChangeForm):
     class Meta:
         model = Aluno
-        fields = ['name', 'cpf', 'email', 'foto']
+        fields = ['nome', 'cpf', 'email', 'foto']
         widgets = {
-            'name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Digite seu nome completo'}),
+            'nome': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Digite seu nome completo'}),
             'cpf': forms.TextInput(attrs={'class': 'form-control read-only', 'readonly': 'readonly'}),
             'email': forms.EmailInput(attrs={'class': 'form-control read-only', 'readonly': 'readonly'}),
             'foto': forms.FileInput(attrs={'class': 'form-control'}),
